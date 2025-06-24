@@ -1,5 +1,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using LibraryManagementSystem_API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,8 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1"
     });
 });
+builder.Services.AddDbContext<LibraryContext>(options =>
+   options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

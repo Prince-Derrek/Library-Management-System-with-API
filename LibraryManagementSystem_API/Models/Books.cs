@@ -1,6 +1,6 @@
 ﻿namespace LibraryManagementSystem_API.Models
 {
-    public class Books
+    public class Book
     {
         public int bookID
         { get; set; }
