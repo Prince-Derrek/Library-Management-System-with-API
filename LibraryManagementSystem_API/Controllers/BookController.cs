@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementSystem_API.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class BookController : ControllerBase
     {
         public readonly LibraryContext _context;
