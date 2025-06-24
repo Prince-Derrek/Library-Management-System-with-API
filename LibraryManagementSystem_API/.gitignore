@@ -1,0 +1,58 @@
+## Ignore Visual Studio temporary files, build results and user-specific files
+
+# Build Output
+bin/
+obj/
+
+# User-Specific files
+*.user
+*.suo
+*.useroscache
+*.sln.docstates
+
+# Visual studio working directory
+.vs/
+
+# Build directories for Razor views
+Generated_Code/
+
+# Npm packages (for front-end in future)
+node_modules/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# ASP.NET Scaffolding files
+ScaffoldingReadMe.txt
+
+# Publish Output
+wwwroot/
+
+# Rider IDE files 
+.idea/
+
+# Resharper files
+*.DotSettings.user
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backup & Package files
+*.bak
+*.zip
+*.tar.gz
+
+# Coverage reports
+coverage/
+
+# Test result files
+TestResults/
+
+# Local environment & secret settings 
+appsetings.Development.json
+secrets.json
