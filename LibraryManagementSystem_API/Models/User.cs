@@ -10,5 +10,7 @@ namespace LibraryManagementSystem_API.Models
         { get; set; }
         public string passwordHash
         { get; set; }
+        public string userRole
+        { get; set; } = "User";//makes default role user
     }
 }

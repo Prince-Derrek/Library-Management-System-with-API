@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using LibraryManagementSystem_API.Data;
 using LibraryManagementSystem_API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementSystem_API.Controllers
 {
@@ -36,6 +37,7 @@ namespace LibraryManagementSystem_API.Controllers
             return Ok(book);//200
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Book>> AddNewBook(Book newBook)
         {
@@ -45,6 +47,7 @@ namespace LibraryManagementSystem_API.Controllers
             return CreatedAtAction(nameof(GetBookByID), new {id = newBook.bookID}, newBook);//201
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Book>> UpdateBookFullDetails(int id, Book updatedBook)
         {
@@ -64,6 +67,7 @@ namespace LibraryManagementSystem_API.Controllers
             return NoContent();//204
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Book>> DeleteBookByID(int id)
         {

@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Http;
 using LibraryManagementSystem_API.Data;
 using LibraryManagementSystem_API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace LibraryManagementSystem_API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
     public class UserController : ControllerBase
     {
         public readonly LibraryContext _context;

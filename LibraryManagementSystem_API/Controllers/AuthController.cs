@@ -72,7 +72,8 @@ namespace LibraryManagementSystem_API.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, user.userName),
-                new Claim(ClaimTypes.NameIdentifier, user.userID.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.userID.ToString()),
+                new Claim(ClaimTypes.Role, user.userRole)//includes the role in the JWT token
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
