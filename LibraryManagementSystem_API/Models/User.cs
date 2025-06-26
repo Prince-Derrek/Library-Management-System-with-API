@@ -8,5 +8,7 @@
         { get; set; }
         public string userPassword
         { get; set; }
+        public string passwordHash
+        { get; set; }
     }
 }
