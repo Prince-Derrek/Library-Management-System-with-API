@@ -57,7 +57,7 @@ namespace LibraryManagementSystem_API.Controllers
             }
 
             user.userName = updatedUser.userName;
-            user.userPassword = updatedUser.userPassword;
+            user.passwordHash = updatedUser.passwordHash;
 
             await _context.SaveChangesAsync();
             return NoContent();
