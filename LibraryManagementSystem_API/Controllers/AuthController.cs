@@ -5,6 +5,12 @@ using LibraryManagementSystem_API.Models; //lets me work with my user model
 using Microsoft.AspNetCore.Identity; //enables password hashing
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore; //for querying the database
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;  //for TokenValidationParameters, SymmetricSecurityKey
+using System.IdentityModel.Tokens.Jwt;  //for JwtSecurityTokenHandler
+using Microsoft.AspNetCore.Identity; //for password hasher
+using System.Text;   //for encoding.UTF8
+using System.Security.Claims;  //for Claim[]
 
 namespace LibraryManagementSystem_API.Controllers
 {
@@ -13,9 +19,14 @@ namespace LibraryManagementSystem_API.Controllers
     public class AuthController : ControllerBase
     {
         public readonly LibraryContext _context;
-        public AuthController(LibraryContext context)
+        private readonly IConfiguration _configuration;
+
+        public AuthController(LibraryContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
+            Console.WriteLine("JWT Key: " + _configuration["Jwt:Key"]);
+
         }
 
         [HttpPost("register")]
@@ -38,6 +49,46 @@ namespace LibraryManagementSystem_API.Controllers
             await _context.SaveChangesAsync();
 
             return Ok("User Registered Successfully");
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> UserLogin([FromBody] LoginDTO loginDTO)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.userName == loginDTO.userName);
+            if (user == null)
+            {
+                return Unauthorized("Invalid username or password");
+            }
+
+            var hasher = new PasswordHasher<User>();
+            var result = hasher.VerifyHashedPassword(user, user.passwordHash, loginDTO.userPassword);
+
+            if (result == PasswordVerificationResult.Failed)
+            {
+                return Unauthorized("Invalid password");
+            }
+
+            //Creating a JWT Token
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, user.userName),
+                new Claim(ClaimTypes.NameIdentifier, user.userID.ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: creds
+            );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return Ok(new { token = tokenString });
         }
     }
 }
