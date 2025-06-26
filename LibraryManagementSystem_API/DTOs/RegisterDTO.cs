@@ -16,5 +16,9 @@ namespace LibraryManagementSystem_API.DTOs
             ErrorMessage = "Password must be atleast 8 characters and include one uppercase letter, one lowercase letter, one number and one special character ie: (!@#$%^&*).No Spaces should be included!!")]
         public string userPassword
         { get; set; }
+
+        [Required(ErrorMessage = "Role is required!")]
+        [RegularExpression("^(Admin|User)$", ErrorMessage = "Role must be either 'Admin' or 'User'.")]
+        public string userRole { get; set; }
     }
 }

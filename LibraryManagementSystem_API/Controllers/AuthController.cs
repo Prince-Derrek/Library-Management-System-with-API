@@ -39,7 +39,8 @@ namespace LibraryManagementSystem_API.Controllers
 
             var user = new User
             {
-                userName = registerDTO.userName
+                userName = registerDTO.userName,
+                userRole = registerDTO.userRole
             };
             
             var hasher = new PasswordHasher<User>();
