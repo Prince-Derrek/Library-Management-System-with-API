@@ -30,7 +30,7 @@ This project is a **Library Management System API** built using **ASP.NET Core 8
 - **JWT Authentication**
 - **Swagger (Swashbuckle)**
 - **Visual Studio 2022/2024**
-- **Postman** (for manual testing)
+- **Swagger** (for manual testing)
 - **Git + GitHub Projects Board** (for progress tracking)
 
 ---
