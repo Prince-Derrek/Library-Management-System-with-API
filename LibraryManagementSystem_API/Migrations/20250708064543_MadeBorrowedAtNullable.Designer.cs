@@ -3,6 +3,7 @@ using System;
 using LibraryManagementSystem_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManagementSystem_API.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20250708064543_MadeBorrowedAtNullable")]
+    partial class MadeBorrowedAtNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.17");
@@ -35,6 +38,7 @@ namespace LibraryManagementSystem_API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("borrowedBy")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("isBorrowed")

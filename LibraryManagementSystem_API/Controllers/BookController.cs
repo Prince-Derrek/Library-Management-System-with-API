@@ -4,6 +4,7 @@ using LibraryManagementSystem_API.Data;
 using LibraryManagementSystem_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using LibraryManagementSystem_API.DTOs;
 
 namespace LibraryManagementSystem_API.Controllers
 {
@@ -85,5 +86,47 @@ namespace LibraryManagementSystem_API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin,User")]
+        [HttpPost("{id}/borrow")]
+        public async Task<ActionResult<Book>> BorrowBookByID(int id)
+        {
+            var book = await _context.Books.FindAsync(id);
+
+            if(book == null)
+            {
+                return NotFound("Book not Found");
+            }
+
+            var username = User.Identity?.Name;
+
+            book.isBorrowed = true;
+            book.borrowedBy = username;
+            book.borrowedAt = DateTime.UtcNow;
+            book.returnedAt = null;
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Book Borrowed Successfully!");
+        }
+
+        [HttpPost("return")]
+        public async Task<IActionResult> ReturnBook([FromBody] ReturnBookDTO dto)
+        {
+            var book = await _context.Books.FindAsync(dto.bookId);
+            if (book == null)
+            {
+                return NotFound("No Such book exists");
+            }
+            if (!book.isBorrowed)
+                return BadRequest("Book is already marked as returned");
+            book.isBorrowed = false;
+            book.borrowedBy = null;
+            book.borrowedAt = null;
+            book.returnedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Book Returned Successfully");
+        }
     }
 }

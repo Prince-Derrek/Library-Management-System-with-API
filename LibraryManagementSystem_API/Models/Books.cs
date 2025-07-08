@@ -10,6 +10,12 @@
         { get; set; }
         public bool isBorrowed
         { get; set; }
+        public string? borrowedBy
+        { get; set; }
+        public DateTime? borrowedAt
+        { get; set; }
+        public DateTime? returnedAt
+        { get; set; }
 
     }
 }
